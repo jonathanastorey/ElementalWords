@@ -4,4 +4,14 @@
 
 using static Kata.ElementalWords;
 
-ElementalForms("Hello");
+var result = ElementalForms("hop");
+
+foreach (var word in result)
+{
+    Console.WriteLine("<-Match Result Start->");
+    foreach (var element in word)
+    {
+        Console.WriteLine(element);
+    }
+    Console.WriteLine("<-Match Result End->");
+}

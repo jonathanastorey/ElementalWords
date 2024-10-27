@@ -10,12 +10,14 @@ class SampleTests
     {
         var cases = new[]
         {
-            //("hop", new[] { new[] { "Beryllium (Be)", "Actinium (Ac)", "Hydrogen (H)" } }),
-            //("", new string[0][]),
-            //("Yes", new[] { new[] { "Yttrium (Y)", "Einsteinium (Es)" } }),
-            //("beach", new[] { new[] { "Beryllium (Be)", "Actinium (Ac)", "Hydrogen (H)" } }),
-            
-            
+            ("", new string[0][]),
+            ("hop", new[]
+            {
+                new[] { "Hydrogen (H)", "Oxygen (O)", "Phosphorus (P)" },
+                new [] { "Holmium (Ho)", "Phosphorus (P)"}
+            }),
+            ("Yes", new[] { new[] { "Yttrium (Y)", "Einsteinium (Es)" } }),
+            ("beach", new[] { new[] { "Beryllium (Be)", "Actinium (Ac)", "Hydrogen (H)" } }),
             ("snack", new[]
             {
                 new[] { "Sulfur (S)", "Nitrogen (N)", "Actinium (Ac)", "Potassium (K)" },
@@ -28,14 +30,5 @@ class SampleTests
             var actual = ElementalWords.ElementalForms(word);
             Assert.That(actual, Is.EquivalentTo(expected), $"Unexpected result for word: {word}");
         }
-    }
-
-    [Test]
-    public void SimpleCases2()
-    {
-        var work = "hop";
-        Console.WriteLine(work[1..1]);
-        
-        
     }
 }

@@ -1,32 +1,37 @@
 ﻿using static Preloaded.Elements;
 
+// These imports are only here to allow copy/paste into the attempt Solution 
+using System.Collections.Generic;
+using System.Linq;
+using System; 
+
 namespace Kata;
 
 public class ElementalWords
 {
     public static string[][] ElementalForms(string word)
     {
-        // Requirements:
-        // Each element in the dictionary has 1 to 3 letters
-        // Ignore case
-        // Returns an array of arrays
-        // Sub array order doesn't matter but array strings need to be in order
-        
-        // Split word into 1,2,3 letters
-        // check if letters exist
-        // Check for next split 1,2,3 letters 
-        // Create matched list
-        // return matches
-
         if (string.IsNullOrWhiteSpace(word))
-            return [];
+            return new string[0][];
         
         var matches = new List<List<string>>();
         
         CheckCurrentLocationForNextMatches(-1, word, new List<string>(), matches);
 
-        return [];
+        return ConvertListResultsToArrays(matches);
 
+    }
+
+    private static string[][] ConvertListResultsToArrays(List<List<string>> matches)
+    {
+        var result = new string[matches.Count][];
+
+        for (var i = 0; i < matches.Count; i++)
+        {
+            result[i] = matches[i].ToArray();
+        }
+
+        return result;
     }
 
     private static string ElementExists(string word)
@@ -40,14 +45,19 @@ public class ElementalWords
     {
 
         if (word.Length == currentLocation + 1)
-            matchedAndCompleted.Add(currentMatchedElements);
+            AddCompletedElementMatchToResults(currentMatchedElements, matchedAndCompleted);
         
         CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,1,matchedAndCompleted);
         
         CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,2,matchedAndCompleted);
         
-        //CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,3,matchedAndCompleted);
+        CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,3,matchedAndCompleted);
 
+    }
+
+    private static void AddCompletedElementMatchToResults(List<string> currentMatchedElements, List<List<string>> matchedAndCompleted)
+    {
+        matchedAndCompleted.Add(currentMatchedElements);
     }
 
     private static void CheckForMatchingElementAndContinue(int currentLocation, string word, List<string> currentMatchedElements, int elementLengthToCheck , List<List<string>> matchedAndCompleted)
