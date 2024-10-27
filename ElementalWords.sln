@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kata", "Kata\Kata.csproj", "{F2A9EE6D-7972-49B2-ADA8-541108F4B12B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Preloaded", "Preloaded\Preloaded.csproj", "{38CCA534-AF43-4185-AE3C-A3B3E08F2692}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F2A9EE6D-7972-49B2-ADA8-541108F4B12B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2A9EE6D-7972-49B2-ADA8-541108F4B12B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2A9EE6D-7972-49B2-ADA8-541108F4B12B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2A9EE6D-7972-49B2-ADA8-541108F4B12B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38CCA534-AF43-4185-AE3C-A3B3E08F2692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38CCA534-AF43-4185-AE3C-A3B3E08F2692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38CCA534-AF43-4185-AE3C-A3B3E08F2692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38CCA534-AF43-4185-AE3C-A3B3E08F2692}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
