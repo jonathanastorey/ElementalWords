@@ -9,16 +9,27 @@ namespace Kata;
 
 public class ElementalWords
 {
+    
+    private static int MaxElementLength { get; set; }
+    
+    private static List<List<string>> MatchedWordsToElements { get; set; }
+    
     public static string[][] ElementalForms(string word)
     {
+        MatchedWordsToElements = new List<List<string>>();
+        
         if (string.IsNullOrWhiteSpace(word))
             return new string[0][];
         
-        var matches = new List<List<string>>();
+        if(ELEMENTS == null)
+            return new string[0][];
         
-        CheckCurrentLocationForNextMatches(-1, word, new List<string>(), matches);
+        // Get the max length of the element symbol
+        MaxElementLength = ELEMENTS.Keys.OrderByDescending(e=>e.Length).FirstOrDefault()?.Length ?? 0;
 
-        return ConvertListResultsToArrays(matches);
+        CheckCurrentLocationForNextMatches(word);
+
+        return ConvertListResultsToArrays(MatchedWordsToElements);
 
     }
 
@@ -36,34 +47,35 @@ public class ElementalWords
 
     private static string ElementExists(string word)
     {
-        var match = ELEMENTS.FirstOrDefault(x => x.Key.Equals(word, StringComparison.InvariantCultureIgnoreCase));
-        return match.Value is not null ? $"{match.Value} ({match.Key})" : string.Empty;
+        var match = ELEMENTS?.FirstOrDefault(x => x.Key.Equals(word, StringComparison.InvariantCultureIgnoreCase));
+        return match != null && !string.IsNullOrWhiteSpace(match.Value.Key) ? $"{match.Value.Value} ({match.Value.Key})" : string.Empty;
     }
 
-    private static void CheckCurrentLocationForNextMatches(int currentLocation, string word,
-        List<string> currentMatchedElements, List<List<string>> matchedAndCompleted)
+    private static void CheckCurrentLocationForNextMatches(string word, List<string>? currentMatchedElements = null, int currentLocation = -1)
     {
-
+        if(currentMatchedElements == null)
+            currentMatchedElements = new List<string>();
+        
         if (word.Length == currentLocation + 1)
-            AddCompletedElementMatchToResults(currentMatchedElements, matchedAndCompleted);
-        
-        CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,1,matchedAndCompleted);
-        
-        CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,2,matchedAndCompleted);
-        
-        CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements,3,matchedAndCompleted);
+            AddCompletedElementMatchToResults(currentMatchedElements);
 
+        // Use the max lenght of the element symbols (requirements suggest only 1,2 or 3) but scope for more  
+        for (var lengthToCheck = 1; lengthToCheck < MaxElementLength; lengthToCheck++)
+        {
+            CheckForMatchingElementAndContinue(currentLocation, word, currentMatchedElements, lengthToCheck);
+        }
     }
 
-    private static void AddCompletedElementMatchToResults(List<string> currentMatchedElements, List<List<string>> matchedAndCompleted)
+    private static void AddCompletedElementMatchToResults(List<string> currentMatchedElements)
     {
-        matchedAndCompleted.Add(currentMatchedElements);
+        MatchedWordsToElements.Add(currentMatchedElements);
     }
 
-    private static void CheckForMatchingElementAndContinue(int currentLocation, string word, List<string> currentMatchedElements, int elementLengthToCheck , List<List<string>> matchedAndCompleted)
+    private static void CheckForMatchingElementAndContinue(int currentLocation, string word, List<string> currentMatchedElements, int elementLengthToCheck)
     {
-        var locationToStartSubStringSearchFrom = currentLocation+1;
-        var locationToEndSubStringSearchFrom = locationToStartSubStringSearchFrom+elementLengthToCheck;
+        
+        var locationToStartSubStringSearchFrom = currentLocation + 1;
+        var locationToEndSubStringSearchFrom = locationToStartSubStringSearchFrom + elementLengthToCheck;
 
         if(word.Length < locationToEndSubStringSearchFrom)
             return;
@@ -71,12 +83,12 @@ public class ElementalWords
         var elementToCheckFor = word[locationToStartSubStringSearchFrom..locationToEndSubStringSearchFrom];
 
         var matchingValue = ElementExists(elementToCheckFor);
-        if (!string.IsNullOrWhiteSpace(matchingValue))
-        {
-            currentLocation += elementLengthToCheck;
-            currentMatchedElements = CreateNewListAndAppendMatchedElement(currentMatchedElements, matchingValue);
-            CheckCurrentLocationForNextMatches(currentLocation, word, currentMatchedElements, matchedAndCompleted);
-        }
+        
+        if (string.IsNullOrWhiteSpace(matchingValue)) return;
+        
+        currentLocation += elementLengthToCheck;
+        currentMatchedElements = CreateNewListAndAppendMatchedElement(currentMatchedElements, matchingValue);
+        CheckCurrentLocationForNextMatches(word, currentMatchedElements,currentLocation);
     }
 
     private static List<string> CreateNewListAndAppendMatchedElement(List<string> currentMatchedElements, string elementMatched)
